@@ -12,3 +12,10 @@ You will need to get a Twitter [bearer token](https://developer.twitter.com/en/d
 
 You will further be asked during a guided deployment what Twitter acocunt you wish to monitor. Multiple accounts can be selected via the syntax `account1,account2,account3`. It will default to my account "Quinnypig" because it is the most important Twitter account of all.
 
+## Licensing
+
+This project is licensed under MongoDB's SSPL because I am shit scared of AWS competing with me, and an suffering delusions of grandeur that AWS would:
+a. Care enough to fork this codebase to do it and
+b. have the poor judgement to do the same. 
+
+Therefore, you are welcome to do anything you'd like with this code EXCEPT FOR YOU, LARGE CLOUD PROVIDERS. 
