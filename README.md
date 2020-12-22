@@ -17,7 +17,7 @@ You will further be asked during a guided deployment what Twitter acocunt you wi
 This project is licensed under MongoDB's SSPL because I am shit-scared of AWS competing with me, and am suffering delusions of grandeur that AWS would:
 
 a. care enough to fork this codebase to do it  
-b. fail to understand how terrible the code itself is
+b. fail to understand how terrible the code itself is  
 c. value a "counting twitter followers" app in the slightest
 
 
