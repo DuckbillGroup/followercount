@@ -1,6 +1,6 @@
 # followercount
 
-This project contains source code and supporting files for a ostensibly counting how many Twitter followers a given Twitter account has over time, but in practice is a testbed serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
+This project contains source code and supporting files for a app that's ostensibly counting how many Twitter followers a given Twitter account has over time, but in practice is a testbed serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
 - mrpopular - Code for the application's Lambda function.
 - events - An invocation event that you can use to invoke the function.
@@ -14,9 +14,11 @@ You will further be asked during a guided deployment what Twitter acocunt you wi
 
 ## Licensing
 
-This project is licensed under MongoDB's SSPL because I am shit scared of AWS competing with me, and am suffering delusions of grandeur that AWS would:
+This project is licensed under MongoDB's SSPL because I am shit-scared of AWS competing with me, and am suffering delusions of grandeur that AWS would:
 
-a. Care enough to fork this codebase to do it and  
-b. have the poor judgement to do the same. 
+a. care enough to fork this codebase to do it  
+b. fail to understand how terrible the code itself is
+c. value a "counting twitter followers" app in the slightest
 
-Therefore, you are welcome to do anything you'd like with this code EXCEPT FOR YOU, LARGE CLOUD PROVIDERS. 
+
+But licensing isn't about making things useful for others nearly so much as it is about my own ego stroking, so the SSPL is clearly the license choice for me. Therefore, you are welcome to do anything you'd like with this code EXCEPT FOR YOU, LARGE CLOUD PROVIDERS. 
