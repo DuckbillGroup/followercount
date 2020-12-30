@@ -10,7 +10,7 @@ The application uses several AWS resources, including Lambda functions and a Dyn
 
 You will need to get a Twitter [bearer token](https://developer.twitter.com/en/docs/authentication/overview) to query the Twitter API. This should be stored in Systems Manager Parameter Store with a key of `TWITTER_BEARER_TOKEN`. 
 
-You will further be asked during a guided deployment what Twitter acocunt you wish to monitor. Multiple accounts can be selected via the syntax `account1,account2,account3`. It will default to my account "Quinnypig" because it is the most important Twitter account of all.
+You will further be asked during a guided deployment what Twitter account you wish to monitor. Multiple accounts can be selected via the syntax `account1,account2,account3`. It will default to my account "Quinnypig" because it is the most important Twitter account of all.
 
 ## Licensing
 
