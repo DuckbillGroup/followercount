@@ -18,7 +18,6 @@ Globals:
       project: followercount
     Environment:
       Variables:
-        BEARER_TOKEN: '{{resolve:ssm:TWITTER_BEARER_TOKEN:1}}'
         TWITTER_ACCOUNTS: !Ref twooters
         TABLE_NAME: !Ref FollowerCount
 
@@ -30,6 +29,8 @@ Resources:
       Handler: mrpopular.handler
       Runtime: python3.8
       Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: TWITTER_BEARER_TOKEN
         - DynamoDBWritePolicy:
             TableName: !Ref FollowerCount
       Tags:

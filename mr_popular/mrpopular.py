@@ -40,7 +40,7 @@ def connect_to_endpoint(url, headers):
 
 
 def handler(event=None, context=None):
-    bearer_token = os.environ.get("BEARER_TOKEN")
+    bearer_token = boto3.client('ssm').get_parameter(Name='TWITTER_BEARER_TOKEN', WithDecryption=True)['Parameter']['Value']
     twooters = os.environ.get("TWITTER_ACCOUNTS")
     url = create_url(twooters)
     headers = create_headers(bearer_token)
