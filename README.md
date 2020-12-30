@@ -2,7 +2,7 @@
 
 This project contains source code and supporting files for a app that's ostensibly counting how many Twitter followers a given Twitter account has over time, but in practice is a testbed serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
 
-- mrpopular - Code for the application's Lambda function.
+- mr_popular - Code for the application's Lambda function.
 - events - An invocation event that you can use to invoke the function.
 - template.yaml - A template that defines the application's AWS resources.
 
