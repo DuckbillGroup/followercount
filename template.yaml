@@ -20,6 +20,8 @@ Globals:
       Variables:
         BEARER_TOKEN: '{{resolve:ssm:TWITTER_BEARER_TOKEN:1}}'
         TWITTER_ACCOUNTS: !Ref twooters
+        TABLE_NAME: !Ref FollowerCount
+
 Resources:
   PopularFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -29,7 +31,7 @@ Resources:
       Runtime: python3.8
       Policies:
         - DynamoDBWritePolicy:
-            TableName: FollowerCount
+            TableName: !Ref FollowerCount
       Tags:
         project: followercount
       Events:
@@ -55,7 +57,6 @@ Resources:
       ProvisionedThroughput: 
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-      TableName: FollowerCount
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
