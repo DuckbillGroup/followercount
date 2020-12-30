@@ -1,0 +1,58 @@
+openapi: "3.0.1"
+info:
+  title:
+    Ref: AWS::StackName
+  description: REST API for Follower Count
+paths:
+  /{twitter_handle}:
+    get:
+      responses:
+        200:
+          description: "200 response"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Empty"
+      x-amazon-apigateway-integration:
+        type: "aws"
+        credentials:
+          Fn::GetAtt: [RestAPIRole, Arn]
+        uri: "arn:aws:apigateway:us-east-1:dynamodb:action/Query"
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: |
+                #set($inputRoot = $input.path('$'))
+                {
+                "twitter_handle": $inputRoot.Items[0].twitter_handle.S,
+                "Items": [#foreach($item in $inputRoot.Items){
+                  "EpochTime": $item.EpochTime.N,
+                  "followers": $item.followers.N
+                }#if($foreach.hasNext),#end
+                #end
+                ]}
+        requestTemplates:
+          application/json:
+            Fn::Join:
+              - ''
+              - - >-
+                  {"TableName": "
+                - Ref: FollowerCount
+                - >-
+                  "
+                - |
+                  ,
+                  "KeyConditionExpression": "twitter_handle = :twitter_handle",
+                  "ExpressionAttributeValues": {
+                      ":twitter_handle": {"S": "$input.params('twitter_handle')"}
+                    }
+                  }
+        passthroughBehavior: "never"
+        httpMethod: "POST"
+components:
+  schemas:
+    Empty:
+      type: object
+      title: Empty Schema
+      description: Empty Schema
