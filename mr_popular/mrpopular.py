@@ -48,14 +48,14 @@ def handler(event=None, context=None):
     with table.batch_writer() as batch:
         for item in json_response['data']:
             batch.put_item(
-                Item={ 
-                    'EpochTime': int(time.time()),
+                Item={
                     'twitter_handle': item['username'],
+                    'EpochTime': int(time.time()),
                     'followers': item['public_metrics']['followers_count']
                 }
             )
     return()
-    
+
 
 if __name__ == "__main__":
     handler()

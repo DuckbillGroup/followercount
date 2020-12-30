@@ -42,20 +42,21 @@ Resources:
             Schedule: rate(1 hour)
             Description: Once an hour
             Enabled: True
+
   FollowerCount:
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:
-        - AttributeName: EpochTime
-          AttributeType: "N"
         - AttributeName: twitter_handle
           AttributeType: "S"
+        - AttributeName: EpochTime
+          AttributeType: "N"
       KeySchema:
-        - AttributeName: "EpochTime"
-          KeyType: "HASH"
         - AttributeName: "twitter_handle"
+          KeyType: "HASH"
+        - AttributeName: "EpochTime"
           KeyType: "RANGE"
-      ProvisionedThroughput: 
+      ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
