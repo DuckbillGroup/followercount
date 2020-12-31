@@ -6,7 +6,7 @@ import time
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table(os.environ.get("TABLE_NAME"))
-# To set your enviornment variables in your terminal run the following line:
+# To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
 
 def create_url(twooters):
