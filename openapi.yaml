@@ -43,6 +43,9 @@ paths:
                   "
                 - |
                   ,
+                  #if(!$method.request.querystring.LastEvaluatedKey.isEmpty())
+                  "ExclusiveStartKey": {"twitter_handle":{"S":"$input.params('twitter_handle')"}, "EpochTime":{"N":"$method.request.querystring.LastEvaluatedKey"}},
+                  #end
                   "KeyConditionExpression": "twitter_handle = :twitter_handle",
                   "ExpressionAttributeValues": {
                       ":twitter_handle": {"S": "$input.params('twitter_handle')"}
