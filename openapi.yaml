@@ -31,7 +31,12 @@ paths:
                   "followers": $item.followers.N
                 }#if($foreach.hasNext),#end
                 #end
-                ]}
+                ],
+                #if(!$inputRoot.LastEvaluatedKey.EpochTime.isEmpty())
+                "LastEvaluatedKey": $inputRoot.LastEvaluatedKey.EpochTime.N,
+                #end
+                "ScannedCount": $inputRoot.ScannedCount
+                }
         requestTemplates:
           application/json:
             Fn::Join:
