@@ -17,12 +17,12 @@ def create_url(twooters):
     # created_at, description, entities, id, location, name,
     # pinned_tweet_id, profile_image_url, protected,
     # public_metrics, url, username, verified, and withheld
-    url = "https://api.twitter.com/2/users/by?{}&{}".format(usernames, user_fields)
+    url = f"https://api.twitter.com/2/users/by?{usernames}&{user_fields}"
     return url
 
 
 def create_headers(bearer_token):
-    headers = {"Authorization": "Bearer {}".format(bearer_token)}
+    headers = {"Authorization": f"Bearer {bearer_token}"}
     return headers
 
 
@@ -30,11 +30,7 @@ def connect_to_endpoint(url, headers):
     response = requests.request("GET", url, headers=headers)
     print(response.status_code)
     if response.status_code != 200:
-        raise Exception(
-            "Request returned an error: {} {}".format(
-                response.status_code, response.text
-            )
-        )
+        raise Exception(f"Request returned an error: {response.status_code} {response.text}")
     return response.json()
 
 
