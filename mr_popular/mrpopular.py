@@ -3,10 +3,14 @@ import os
 import boto3
 import time
 
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table(os.environ.get("TABLE_NAME"))
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
+
+def set_bearer_token():
+    ssm_client = boto3.client('ssm')
+    ssm_parameter = ssm_client.get_parameter(Name='TWITTER_BEARER_TOKEN', WithDecryption=True)
+    return ssm_parameter['Parameter']['Value']
+
 
 def create_url(twooters):
     # Specify the usernames that you want to lookup below
@@ -34,11 +38,12 @@ def connect_to_endpoint(url, headers):
     return response.json()
 
 
+table = boto3.resource('dynamodb').Table(os.environ.get("TABLE_NAME"))
+twooters = os.environ.get("TWITTER_ACCOUNTS")
+url = create_url(twooters)
+headers = create_headers(set_bearer_token())
+
 def handler(event=None, context=None):
-    bearer_token = boto3.client('ssm').get_parameter(Name='TWITTER_BEARER_TOKEN', WithDecryption=True)['Parameter']['Value']
-    twooters = os.environ.get("TWITTER_ACCOUNTS")
-    url = create_url(twooters)
-    headers = create_headers(bearer_token)
     json_response = connect_to_endpoint(url, headers)
     with table.batch_writer() as batch:
         for item in json_response['data']:
