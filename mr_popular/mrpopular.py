@@ -53,7 +53,6 @@ def handler(event=None, context=None):
                     'followers': item['public_metrics']['followers_count']
                 }
             )
-    return()
 
 
 if __name__ == "__main__":
