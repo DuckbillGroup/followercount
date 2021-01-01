@@ -25,7 +25,7 @@ paths:
               application/json: |
                 #set($inputRoot = $input.path('$'))
                 {
-                "twitter_handle": $inputRoot.Items[0].twitter_handle.S,
+                "twitter_handle": "$input.params('twitter_handle')",
                 "Items": [#foreach($item in $inputRoot.Items){
                   "EpochTime": $item.EpochTime.N,
                   "followers": $item.followers.N
