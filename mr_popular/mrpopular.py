@@ -1,13 +1,16 @@
 import requests
 import os
-import json
 import boto3
 import time
 
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('FollowerCount')
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
+
+def set_bearer_token():
+    ssm_client = boto3.client('ssm')
+    ssm_parameter = ssm_client.get_parameter(Name='TWITTER_BEARER_TOKEN', WithDecryption=True)
+    return ssm_parameter['Parameter']['Value']
+
 
 def create_url(twooters):
     # Specify the usernames that you want to lookup below
@@ -18,12 +21,12 @@ def create_url(twooters):
     # created_at, description, entities, id, location, name,
     # pinned_tweet_id, profile_image_url, protected,
     # public_metrics, url, username, verified, and withheld
-    url = "https://api.twitter.com/2/users/by?{}&{}".format(usernames, user_fields)
+    url = f"https://api.twitter.com/2/users/by?{usernames}&{user_fields}"
     return url
 
 
 def create_headers(bearer_token):
-    headers = {"Authorization": "Bearer {}".format(bearer_token)}
+    headers = {"Authorization": f"Bearer {bearer_token}"}
     return headers
 
 
@@ -31,31 +34,27 @@ def connect_to_endpoint(url, headers):
     response = requests.request("GET", url, headers=headers)
     print(response.status_code)
     if response.status_code != 200:
-        raise Exception(
-            "Request returned an error: {} {}".format(
-                response.status_code, response.text
-            )
-        )
+        raise Exception(f"Request returned an error: {response.status_code} {response.text}")
     return response.json()
 
 
+table = boto3.resource('dynamodb').Table(os.environ.get("TABLE_NAME"))
+twooters = os.environ.get("TWITTER_ACCOUNTS")
+url = create_url(twooters)
+headers = create_headers(set_bearer_token())
+
 def handler(event=None, context=None):
-    bearer_token = os.environ.get("BEARER_TOKEN")
-    twooters = os.environ.get("TWITTER_ACCOUNTS")
-    url = create_url(twooters)
-    headers = create_headers(bearer_token)
     json_response = connect_to_endpoint(url, headers)
     with table.batch_writer() as batch:
         for item in json_response['data']:
             batch.put_item(
-                Item={ 
-                    'EpochTime': int(time.time()),
+                Item={
                     'twitter_handle': item['username'],
+                    'EpochTime': int(time.time()),
                     'followers': item['public_metrics']['followers_count']
                 }
             )
-    return()
-    
+
 
 if __name__ == "__main__":
     handler()
