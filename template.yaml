@@ -12,6 +12,8 @@ Parameters:
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
+  Api:
+    OpenApiVersion: "3.0.1"
   Function:
     Timeout: 3
     Tags:
@@ -60,13 +62,50 @@ Resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
+  RestAPIRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: apigateway.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Policies:
+        - PolicyName: RestAPIPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                - dynamodb:Query
+                Resource:
+                - !Sub arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${FollowerCount}
+
+  RestAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      DefinitionBody:
+        Fn::Transform:
+          Name: AWS::Include
+          Parameters:
+            Location: './openapi.yaml'
+
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+
   PopularFunction:
     Description: "Popular Lambda Function ARN"
     Value: !GetAtt PopularFunction.Arn
+
   PopularFunctionIamRole:
     Description: "Implicit IAM Role created for Popular function"
     Value: !GetAtt PopularFunctionRole.Arn
+
+  ApiRoot:
+    Value: !Sub https://${RestAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod
