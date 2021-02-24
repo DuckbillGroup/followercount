@@ -17,7 +17,8 @@ paths:
         type: "aws"
         credentials:
           Fn::GetAtt: [RestAPIRole, Arn]
-        uri: "arn:aws:apigateway:us-east-1:dynamodb:action/Query"
+        uri: 
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:dynamodb:action/Query"
         responses:
           default:
             statusCode: "200"

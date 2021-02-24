@@ -6,9 +6,10 @@ import time
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
 
+ssm_client = boto3.client('ssm')
+ssm_parameter = ssm_client.get_parameter(Name='TWITTER_BEARER_TOKEN', WithDecryption=True)
+
 def set_bearer_token():
-    ssm_client = boto3.client('ssm')
-    ssm_parameter = ssm_client.get_parameter(Name='TWITTER_BEARER_TOKEN', WithDecryption=True)
     return ssm_parameter['Parameter']['Value']
 
 

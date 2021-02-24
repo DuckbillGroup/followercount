@@ -15,7 +15,7 @@ Globals:
   Api:
     OpenApiVersion: "3.0.1"
   Function:
-    Timeout: 3
+    Timeout: 10
     Tags:
       project: followercount
     Environment:
@@ -30,6 +30,7 @@ Resources:
       CodeUri: mr_popular/
       Handler: mrpopular.handler
       Runtime: python3.8
+      MemorySize: 256
       Policies:
         - SSMParameterReadPolicy:
             ParameterName: TWITTER_BEARER_TOKEN
@@ -42,7 +43,7 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: rate(1 hour)
-            Description: Once an hour
+            Description: Once every five minutes
             Enabled: True
 
   FollowerCount:
